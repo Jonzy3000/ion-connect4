@@ -1,7 +1,7 @@
 ; (function () {
     'use strict';
 
-    var gameView = function ($scope) {
+    var gameView = function ($scope, boardFactory) {
 
     }
 
