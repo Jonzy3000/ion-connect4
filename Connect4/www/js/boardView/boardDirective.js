@@ -11,7 +11,7 @@
                 console.log("HELLO");
 
                 scope.board = boardFactory.getBoard();
-                
+
                 scope.$watch(function () {
                     return boardFactory.getBoard();
                 }, onBoardChange);

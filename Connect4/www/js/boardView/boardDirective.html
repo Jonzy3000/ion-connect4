@@ -1,5 +1,12 @@
 <div>
+    <div id="board">
+        <div class="column" ng-repeat="column in board" style="display:inline-block;background:blue">
+            <svg width="51" height="50" ng-repeat="item in column track by $index">
+                <circle cx="25" cy="25" r="20" stroke="#0B4E72" fill="white"></circle>
+            </svg>
+        </div>
+    </div>
     <div ng-repeat="row in board">
-        <span ng-repeat='item in row track by $index'>{{item}}  </span> 
+        <span ng-repeat='item in row track by $index'>{{item}}  </span>
     </div>
 </div>
