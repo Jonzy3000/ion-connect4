@@ -3,11 +3,7 @@
 
     var boardLogic = function (gameConstants, boardHelpers) {
         let board = createBoard(gameConstants.NUMBER_OF_ROWS, gameConstants.NUMBER_OF_COLUMNS);
-
-        board[0][1] = gameConstants.PIECE_1;
-        board[1][2] = gameConstants.PIECE_1;
-        board[2][3] = gameConstants.PIECE_1;
-        board[3][4] = gameConstants.PIECE_1;
+        lastPiecePlaced = {};
 
         boardHelpers.printBoard(board);
 
@@ -33,8 +29,31 @@
             return lastPiecePlaced;
         }
 
+        function updateLastPlacedPiece(point, piece) {
+            lastPiecePlaced.x = point.x;
+            lastPiecePlaced.y = point.y;
+            lastPiecePlaced.piece = piece;
+        }
+
+        var dropPieceInBoard = function (column, piece) {
+            for (var i = board.length - 1; i >= 0 ; i--) {
+                if (board[i][column] === gameConstants.EMPTY_TILE) {
+                    board[i][column] = piece;
+
+                    var pointUpdated = { x: i, y: column };
+                    updateLastPlacedPiece(pointUpdated, piece);
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         return {
-            getBoard: getBoard
+            getBoard: getBoard,
+            dropPieceInBoard: dropPieceInBoard,
+            getLastPiecePlaced: getLastPiecePlaced
         }
 
     }

@@ -1,22 +1,19 @@
 (function () {
     "use-strict"
 
-    var turnHandler = function (playerConstant) {
-        let player1 = playerConstant;
-        let player2 = playerConstant;
-        let lastPiecePlaced = {};
+    var turnHandler = function (playerConstant, gameConstants, winConditions, tieConditions, boardFactory) {
+        let player1 = {
+            player: 1,
+            isAi: false
+        };
 
-        function setUpPlayers() {
-            player1.player = 1;
-            player1.isAi = false;
-
-            player2.player = 2;
-            player2.isAi = false;
+        let player2 = {
+            player: 2,
+            isAi: false
         }
 
-        setUpPlayers();
-
         let whoseGoIsIt = player1;
+        let gameOver = false;
 
         function nextPlayersGo() {
             if (whoseGoIsIt.player === 1) {
@@ -26,15 +23,40 @@
             }
         }
 
+        function getPieceFromPlayer(player) {
+            return player === 1 ? gameConstants.PIECE_1 : gameConstants.PIECE_2;
+        }
+
         function endTurn() {
-            if (isTherAWinner(lastPiecePlaced)) {
-                dealWithPlayerWinning()
+            if (winConditions.isThereAWinner(boardFactory.getLastPiecePlaced())) {
+                // dealWithPlayerWinning();
+                console.log("WE HAVE A WINNER");
+                gameOver = true;
             }
-            else if (isThereATie()) {
+            else if (tieConditions.isThereATie()) {
                 dealWithATie();
+                gameOver = true;
             } else {
                 nextPlayersGo();
             }
         }
+
+        function makeTurn(columnOfChoice) {
+            if (gameOver) {
+                return;
+            }
+            let validMove = boardFactory.dropPieceInBoard(columnOfChoice, getPieceFromPlayer(whoseGoIsIt.player));
+
+            if (validMove) {
+                endTurn();
+            }
+        }
+
+        return {
+            makeTurn: makeTurn
+        }
     }
+
+    angular.module("connect4")
+        .factory("turnHandler", turnHandler);
 })();

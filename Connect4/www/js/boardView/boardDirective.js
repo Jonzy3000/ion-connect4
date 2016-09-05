@@ -1,15 +1,13 @@
 (function () {
     "use-strict";
 
-    var directive = function (boardFactory) {
+    var directive = function (boardFactory, gameConstants, turnHandler) {
         return {
             scope: {
 
             },
             templateUrl: 'js/boardView/boardDirective.html',
             link: function (scope, element, attrs) {
-                console.log("HELLO");
-
                 scope.board = boardFactory.getBoard();
 
                 scope.$watch(function () {
@@ -18,6 +16,23 @@
 
                 var onBoardChange = function (board) {
                     scope.board = board;
+                }
+
+                scope.getCircleClass = function(item) {
+                    if (item === gameConstants.PIECE_1) {
+                        return "piece1";
+                    } 
+                    else if (item === gameConstants.PIECE_2) {
+                        return "piece2";
+                    } 
+                    else if (item === gameConstants.EMPTY_TILE) {
+                        return "empty";
+                    }
+                }
+
+                scope.makeTurn = function(column) {
+                    console.log(column);
+                    turnHandler.makeTurn(column);
                 }
             }
         }

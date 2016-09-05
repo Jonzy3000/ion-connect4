@@ -1,1 +1,20 @@
-/* Empty. Add your own CSS if you like */
+.board-row {
+    display:inline-block;
+    background:#0074B3
+}
+
+.board-row:hover circle {
+    cursor: pointer;
+}
+
+.piece1 {
+    fill: rgb(150,25,20)
+}
+
+.piece2 {
+    fill: rgb(255, 255, 26)
+}
+
+.empty {
+    fill: white;
+}

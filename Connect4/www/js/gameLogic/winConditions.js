@@ -10,6 +10,7 @@
         }
 
         function isThereAWinner(lastPlacedPiece) {
+            console.log(lastPlacedPiece);
             updateBoard(lastPlacedPiece);
             return isThereAWinnerHorizontally() || isThereAWinnerVertically() || isThereAWinnerDiaganoally();
         }
@@ -17,7 +18,6 @@
         function isThereAWinnerHorizontally() {
             let rowNumberToCheck = lastPlacedPiece.x;
             let rowToCheck = board[rowNumberToCheck];
-
             return isThereNInARowInThisArray(rowToCheck, lastPlacedPiece.y);
         }
 
@@ -46,19 +46,42 @@
             return isThereNInARowInThisArray(diagonal, lastPlacedPiece.x);
         }
 
-        function isThereNInARowInThisArray(arrayToCheck, lastPlacedPiecePosition) {
+        function reduceTheArrayWithinWinningBounds(arrayToCheck, lastPlacedPiecePosition) {
             var startPoint = Math.max(0, lastPlacedPiecePosition - gameConstants.NUMBER_TO_CONNECT_TO_WIN)
             var endPoint = Math.min(arrayToCheck.length, lastPlacedPiecePosition + gameConstants.NUMBER_TO_CONNECT_TO_WIN);
 
-            var reducedArray = arrayToCheck.slice(startPoint, endPoint);
+            return arrayToCheck.slice(startPoint, endPoint);
+        }
 
-            var firstItemIsNotEmpty = reducedArray[0] !== gameConstants.EMPTY_TILE;
-            var correctLength = reducedArray.length === gameConstants.NUMBER_TO_CONNECT_TO_WIN;
+        function isThereNInARowInThisArray(arrayToCheck, lastPlacedPiecePosition) {
+            var reducedArray = reduceTheArrayWithinWinningBounds(arrayToCheck, lastPlacedPiecePosition);
 
-            return firstItemIsNotEmpty &&
-                correctLength &&
-                arrayHelpers.allItemsAreTheSame(reducedArray);
+            var countOfPiecesInArray = _.countBy(reducedArray)[lastPlacedPiece.piece] || 0;
+            if (countOfPiecesInArray < gameConstants.NUMBER_TO_CONNECT_TO_WIN) {
+                return false;
+            }
 
+            return isThereNInARowInReducedArray(reducedArray);
+        }
+
+        function isThereNInARowInReducedArray(reducedArray) {
+            var foundMatchingPiece = false;
+            var nInARow = 0;
+            for (var i = 0, len = reducedArray.length; i < len; i++) {
+                if (reducedArray[i] === lastPlacedPiece.piece) {
+                    foundMatchingPiece = true;
+                    nInARow++;
+                } else if (foundMatchingPiece) {
+                    nInARow = 0;
+                    foundMatchingPiece = 0;
+                }
+
+                if (nInARow === gameConstants.NUMBER_TO_CONNECT_TO_WIN) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         return {
