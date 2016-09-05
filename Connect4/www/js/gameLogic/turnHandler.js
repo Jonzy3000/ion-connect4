@@ -4,6 +4,7 @@
     var turnHandler = function (playerConstant) {
         let player1 = playerConstant;
         let player2 = playerConstant;
+        let lastPiecePlaced = {};
 
         function setUpPlayers() {
             player1.player = 1;
@@ -26,7 +27,7 @@
         }
 
         function endTurn() {
-            if (isTherAWinner()) {
+            if (isTherAWinner(lastPiecePlaced)) {
                 dealWithPlayerWinning()
             }
             else if (isThereATie()) {

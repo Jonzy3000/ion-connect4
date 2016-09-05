@@ -1,7 +1,7 @@
 ; (function () {
     'use strict';
 
-    var winConditions = function (gameConstants, boardFactory, boardHelpers) {
+    var winConditions = function (gameConstants, boardFactory, boardHelpers, arrayHelpers) {
         let board = [];
         let lastPlacedPiece = {};
         function updateBoard(lastPlacedPiece_) {
@@ -25,7 +25,7 @@
             let columnNumberToCheck = lastPlacedPiece.y;
             let columnToCheck = boardHelpers.getNthColumn(board, columnNumberToCheck);
 
-            return isThereNInARowInThisArray(columnNumberToCheck, lastPlacedPiece.x);
+            return isThereNInARowInThisArray(columnToCheck, lastPlacedPiece.x);
         }
 
         function isThereAWinnerDiaganoally() {
@@ -47,17 +47,26 @@
         }
 
         function isThereNInARowInThisArray(arrayToCheck, lastPlacedPiecePosition) {
-
             var startPoint = Math.max(0, lastPlacedPiecePosition - gameConstants.NUMBER_TO_CONNECT_TO_WIN)
             var endPoint = Math.min(arrayToCheck.length, lastPlacedPiecePosition + gameConstants.NUMBER_TO_CONNECT_TO_WIN);
 
             var reducedArray = arrayToCheck.slice(startPoint, endPoint);
 
-            return _.every(reducedArray, function (piece) {
-                piece === pieceToCheck;
-            })
+            var firstItemIsNotEmpty = reducedArray[0] !== gameConstants.EMPTY_TILE;
+            var correctLength = reducedArray.length === gameConstants.NUMBER_TO_CONNECT_TO_WIN;
+
+            return firstItemIsNotEmpty &&
+                correctLength &&
+                arrayHelpers.allItemsAreTheSame(reducedArray);
+
         }
 
-
+        return {
+            isThereAWinner: isThereAWinner
+        }
     }
+
+    angular.module("connect4")
+        .factory("winConditions", winConditions)
+        ;
 })();

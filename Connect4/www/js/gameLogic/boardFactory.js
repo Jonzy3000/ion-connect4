@@ -1,9 +1,15 @@
 (function () {
     "use-strict";
 
-    var boardLogic = function (gameConstants) {
+    var boardLogic = function (gameConstants, boardHelpers) {
         let board = createBoard(gameConstants.NUMBER_OF_ROWS, gameConstants.NUMBER_OF_COLUMNS);
-        console.log(board);
+
+        board[0][1] = gameConstants.PIECE_1;
+        board[1][2] = gameConstants.PIECE_1;
+        board[2][3] = gameConstants.PIECE_1;
+        board[3][4] = gameConstants.PIECE_1;
+
+        boardHelpers.printBoard(board);
 
         function createBoard(numberOfRows, numberOfColumns) {
             let board = new Array(numberOfRows);
@@ -21,6 +27,10 @@
 
         var getBoard = function () {
             return board;
+        }
+
+        var getLastPiecePlaced = function () {
+            return lastPiecePlaced;
         }
 
         return {

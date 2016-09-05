@@ -1,8 +1,14 @@
 ; (function () {
     'use strict';
 
-    var gameView = function ($scope, boardFactory) {
-
+    var gameView = function ($scope, boardFactory, winConditions, gameConstants) {
+                console.log(winConditions.isThereAWinner(
+            {
+                x: 0,
+                y: 1,
+                piece: gameConstants.PIECE_1
+            }
+        ))
     }
 
     angular.module('connect4')
