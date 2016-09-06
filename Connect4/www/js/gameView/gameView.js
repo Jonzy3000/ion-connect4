@@ -2,6 +2,7 @@
     'use strict';
 
     var gameView = function ($scope, boardFactory, winConditions, gameConstants) {
+        console.log("HELLO");
         //         console.log(winConditions.isThereAWinner(
         //     {
         //         x: 0,

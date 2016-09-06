@@ -2,13 +2,13 @@
     "use-strict";
 
     var boardLogic = function (gameConstants, boardHelpers) {
-        let board = createBoard(gameConstants.NUMBER_OF_ROWS, gameConstants.NUMBER_OF_COLUMNS);
+        var board = createBoard(gameConstants.NUMBER_OF_ROWS, gameConstants.NUMBER_OF_COLUMNS);
         lastPiecePlaced = {};
 
         boardHelpers.printBoard(board);
 
         function createBoard(numberOfRows, numberOfColumns) {
-            let board = new Array(numberOfRows);
+            var board = new Array(numberOfRows);
 
             for (var i = 0; i < numberOfRows; i++) {
                 board[i] = createEmptyRow(numberOfColumns);

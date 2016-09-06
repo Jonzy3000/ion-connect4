@@ -2,18 +2,18 @@
     "use-strict"
 
     var turnHandler = function (playerConstant, gameConstants, winConditions, tieConditions, boardFactory) {
-        let player1 = {
+        var player1 = {
             player: 1,
             isAi: false
         };
 
-        let player2 = {
+        var player2 = {
             player: 2,
             isAi: false
         }
 
-        let whoseGoIsIt = player1;
-        let gameOver = false;
+        var whoseGoIsIt = player1;
+        var gameOver = false;
 
         function nextPlayersGo() {
             if (whoseGoIsIt.player === 1) {
@@ -45,7 +45,7 @@
             if (gameOver) {
                 return;
             }
-            let validMove = boardFactory.dropPieceInBoard(columnOfChoice, getPieceFromPlayer(whoseGoIsIt.player));
+            var validMove = boardFactory.dropPieceInBoard(columnOfChoice, getPieceFromPlayer(whoseGoIsIt.player));
 
             if (validMove) {
                 endTurn();
