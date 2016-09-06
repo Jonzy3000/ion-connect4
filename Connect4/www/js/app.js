@@ -28,4 +28,4 @@ angular.module('starter', ['ionic', 'connect4'])
     });
   })
 
-angular.module('connect4', [])
+angular.module('connect4', ['ui.router'])
