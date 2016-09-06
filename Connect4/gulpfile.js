@@ -57,7 +57,6 @@ gulp.task('git-check', function (done) {
 gulp.task('test', function (done) {
   karma.start({
     configFile: __dirname + '/test/my.conf.js',
-    singleRun: true
   }, function () {
     done();
   });

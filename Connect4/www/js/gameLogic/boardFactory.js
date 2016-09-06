@@ -5,8 +5,6 @@
         var board = createBoard(gameConstants.NUMBER_OF_ROWS, gameConstants.NUMBER_OF_COLUMNS);
         lastPiecePlaced = {};
 
-        boardHelpers.printBoard(board);
-
         function createBoard(numberOfRows, numberOfColumns) {
             var board = new Array(numberOfRows);
 
@@ -40,7 +38,7 @@
         }
 
         var dropPieceInBoard = function (column, piece) {
-            for (var i = board.length - 1; i >= 0 ; i--) {
+            for (var i = board.length - 1; i >= 0; i--) {
                 if (isEmptyTile(i, column)) {
                     board[i][column] = piece;
 
@@ -51,10 +49,10 @@
                 }
             }
 
-           throw new Error("invalid move");
+            throw new Error("invalid move");
         }
 
-        var removeItemFromBoard = function(lastEntry) {
+        var removeItemFromBoard = function (lastEntry) {
             board[lastEntry.x][lastEntry.y] = gameConstants.EMPTY_TILE;
         }
 
@@ -62,7 +60,10 @@
             getBoard: getBoard,
             dropPieceInBoard: dropPieceInBoard,
             getLastPiecePlaced: getLastPiecePlaced,
-            removeItemFromBoard: removeItemFromBoard
+            removeItemFromBoard: removeItemFromBoard,
+            _setBoard: function(b) {
+                board = b;
+            }
         }
 
     }

@@ -18,9 +18,9 @@ module.exports = function (config) {
       '../www/lib/angular/angular.js',
       '../www/lib/angular-mocks/angular-mocks.js',
       '../www/lib/angular-ui-router/release/angular-ui-router.js',
-      '../www/js/*.js',
       '../www/js/**/*.js',
-
+      '../www/assets/*.js',
+      '../www/js/*.js',
       '**/*.tests.js'
     ],
 

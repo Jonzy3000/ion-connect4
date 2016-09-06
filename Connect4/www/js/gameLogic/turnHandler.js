@@ -45,6 +45,7 @@
         function tryToDropPieceInBoard(columnOfChoice) {
             try {
                 var pointUpdated = boardFactory.dropPieceInBoard(columnOfChoice, getPieceFromPlayer(whoseGoIsIt.player));
+                pointUpdated.piece = getPieceFromPlayer(whoseGoIsIt.player);
                 turnHistory.push(pointUpdated);
             }
             catch (e) {
@@ -77,7 +78,15 @@
 
         return {
             makeTurn: makeTurn,
-            undoTurn: undoTurn
+            undoTurn: undoTurn,
+            _lastPiecePlaced: function() {
+                return turnHistory[turnHistory.length - 1];
+            },
+            _resetTurn: function() {
+                while (turnHistory.length > 0) {
+                    undoTurn();
+                }
+            }
         }
     }
 

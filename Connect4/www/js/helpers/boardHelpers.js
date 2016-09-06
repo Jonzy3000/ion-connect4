@@ -45,15 +45,15 @@
 
             var diagonal = [];
             for (var i = x, j = y, len = board.length; i < len; i++) {
-                if (j >= board[i].length) {
+                if (j < 0) {
                     break;
                 }
 
-                diagonal.push(board[i][j++]);
+                diagonal.push(board[i][j--]);
             }
 
-            for (var i = x - 1, j = y - 1; i > 0; i--) {
-                if (j < 0) {
+            for (var i = x - 1, j = y + 1; i >= 0; i--) {
+                if (j >= board[0].length) {
                     break;
                 }
 
@@ -70,19 +70,19 @@
             var diagonal = [];
 
             for (var i = x, j = y, len = board.length; i < len; i++) {
+                if (j >= board[0].length) {
+                    break;
+                }
+
+                diagonal.push(board[i][j++]);
+            }
+
+            for (var i = x - 1, j = y - 1, len = board.length; i >= 0; i--) {
                 if (j < 0) {
                     break;
                 }
 
                 diagonal.push(board[i][j--]);
-            }
-
-            for (var i = x - 1, j = y - 1, len = board.length; i > 0; i--) {
-                if (j >= len) {
-                    break;
-                }
-
-                diagonal.push([i][j++]);
             }
 
             return diagonal;
