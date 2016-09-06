@@ -69,7 +69,7 @@
         }
 
         function undoTurn() {
-            if (turnHistory.length > 0 && !isGameOver) {
+            if (turnHistory.length > 0) {
                 var lastMove = turnHistory.pop();
                 boardFactory.removeItemFromBoard(lastMove);
                 nextPlayersGo();
@@ -84,17 +84,21 @@
             gameOver.setIsATie(true);
         }
 
+        function newGame() {
+            isGameOver = false;
+            while (turnHistory.length > 0) {
+                undoTurn();
+            }
+        }
+
         return {
             makeTurn: makeTurn,
             undoTurn: undoTurn,
             _lastPiecePlaced: function () {
                 return turnHistory[turnHistory.length - 1];
             },
-            _resetTurn: function () {
-                while (turnHistory.length > 0) {
-                    undoTurn();
-                }
-            }
+            _resetTurn: newGame,
+            newGame: newGame
         }
     }
 

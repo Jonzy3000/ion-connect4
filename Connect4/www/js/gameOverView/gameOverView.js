@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    var gameOverView = function (gameOver, $ionicPopover) {
+    var gameOverView = function (gameOver, $ionicPopover, turnHandler) {
         return {
             scope: {
 
@@ -23,11 +23,16 @@
 
                 function calculatePopUpMessage() {
                     if (winner.isAi) {
-                        scope.message = "CPU (" + winner.player +") Wins"
+                        scope.message = "CPU (" + winner.player + ") Wins"
                     } else {
                         //get some thing that tells on what the game type isAi
-                        scope.message = "Player " + winner.player + "Wins!";
+                        scope.message = "Player " + winner.player + " Wins!";
                     }
+                }
+
+                scope.newGame = function () {
+                    turnHandler.newGame();
+                    scope.closePopover();
                 }
 
                 $ionicPopover.fromTemplateUrl('my-popover.html', {
