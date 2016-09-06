@@ -8,6 +8,7 @@
         }
 
         function isThereATie() {
+            //could make this 0(1) just by checking the size of turn handler turnHistory
             updateBoard();
             return board[0].indexOf(".") == -1;
         }

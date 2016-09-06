@@ -1,6 +1,30 @@
 ; (function () {
     "use strict";
 
+
+    var getIndiciesIfNInARow = function (array, numberToWin, pieceToCheck) {
+        var foundMatchingPiece = false;
+        var nInARow = 0;
+        var indicies = [];
+        for (var i = 0, len = array.length; i < len; i++) {
+            if (array[i] === pieceToCheck) {
+                foundMatchingPiece = true;
+                nInARow++;
+                indicies.push(i);
+            } else if (foundMatchingPiece) {
+                nInARow = 0;
+                foundMatchingPiece = 0;
+                indicies = [];
+            }
+
+            if (nInARow === numberToWin) {
+                return indicies;
+            }
+        }
+
+        return [];
+    }
+
     var boardHelpers = {
         "getNthColumn": function (board, n) {
             if (n > board[0].length || n < 0) {
@@ -63,18 +87,19 @@
 
             return diagonal;
         },
-        "printBoard" : function(board) {
-            for (var i = 0 ; i < board.length; i++) {
+        "printBoard": function (board) {
+            for (var i = 0; i < board.length; i++) {
                 var row = "";
-                for (var j = 0 ; j < board[i].length; j++) {
+                for (var j = 0; j < board[i].length; j++) {
                     row += board[i][j] + ' ';
                 }
                 console.log(row);
             }
+        },
+        "getIndiciesIfNInARow": getIndiciesIfNInARow,
+        "isThereNInARow": function (reducedArray, numberToWin, pieceToCheck) {
+            return getIndiciesIfNInARow(reducedArray, numberToWin, reducedArray).length === numberToWin;
         }
-        
-
-
     }
 
     angular.module("connect4")

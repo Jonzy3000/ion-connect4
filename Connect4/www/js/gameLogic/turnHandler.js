@@ -2,6 +2,7 @@
     "use-strict"
 
     var turnHandler = function (playerConstant, gameConstants, winConditions, tieConditions, boardFactory) {
+        var turnHistory = [];
         var player1 = {
             player: 1,
             isAi: false
@@ -41,19 +42,42 @@
             }
         }
 
+        function tryToDropPieceInBoard(columnOfChoice) {
+            try {
+                var pointUpdated = boardFactory.dropPieceInBoard(columnOfChoice, getPieceFromPlayer(whoseGoIsIt.player));
+                turnHistory.push(pointUpdated);
+            }
+            catch (e) {
+                console.log(e);
+                return false;
+            }
+
+            return true;
+        }
+
         function makeTurn(columnOfChoice) {
             if (gameOver) {
                 return;
             }
-            var validMove = boardFactory.dropPieceInBoard(columnOfChoice, getPieceFromPlayer(whoseGoIsIt.player));
+
+            var validMove = tryToDropPieceInBoard(columnOfChoice);
 
             if (validMove) {
                 endTurn();
             }
         }
 
+        function undoTurn() {
+            if (turnHistory.length > 0) {
+                var lastMove = turnHistory.pop();
+                boardFactory.removeItemFromBoard(lastMove);
+                nextPlayersGo();
+            }
+        }
+
         return {
-            makeTurn: makeTurn
+            makeTurn: makeTurn,
+            undoTurn: undoTurn
         }
     }
 

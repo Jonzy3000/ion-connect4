@@ -1,5 +1,5 @@
 (function () {
-    "use-strict";
+    "use strict";
 
     var directive = function (boardFactory, gameConstants, turnHandler) {
         return {
@@ -31,7 +31,6 @@
                 }
 
                 scope.makeTurn = function(column) {
-                    console.log(column);
                     turnHandler.makeTurn(column);
                 }
             }

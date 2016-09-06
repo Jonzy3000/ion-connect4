@@ -2,55 +2,113 @@
     'use strict';
 
     var winConditions = function (gameConstants, boardFactory, boardHelpers, arrayHelpers) {
-        let board = [];
-        let lastPlacedPiece = {};
+        var board = [];
+        var lastPlacedPiece = {};
+        var winningPositions = [];
+        var indiciesOfWinningPositon = [];
+        var startPoint;
+        var endPoint;
+
         function updateBoard(lastPlacedPiece_) {
             board = boardFactory.getBoard();
             lastPlacedPiece = lastPlacedPiece_;
         }
 
         function isThereAWinner(lastPlacedPiece) {
-            console.log(lastPlacedPiece);
             updateBoard(lastPlacedPiece);
             return isThereAWinnerHorizontally() || isThereAWinnerVertically() || isThereAWinnerDiaganoally();
         }
 
         function isThereAWinnerHorizontally() {
-            let rowNumberToCheck = lastPlacedPiece.x;
-            let rowToCheck = board[rowNumberToCheck];
-            return isThereNInARowInThisArray(rowToCheck, lastPlacedPiece.y);
+            var rowNumberToCheck = lastPlacedPiece.x;
+            var rowToCheck = board[rowNumberToCheck];
+
+            if (isThereNInARowInThisArray(rowToCheck, lastPlacedPiece.y)) {
+                calculateWinningPostionsHorizontally();
+                return true;
+            }
+
+            return false;
+        }
+
+        function calculateWinningPostionsHorizontally() {
+            var row = lastPlacedPiece.x;
+            var winningPosition = [];
+            for (var i = 0; i < indiciesOfWinningPositon.length; i++) {
+                var point = { x: startPoint + indiciesOfWinningPositon[i], y: row };
+                winningPosition.push(point)
+            }
+
+            winningPositions.push(winningPosition);
         }
 
         function isThereAWinnerVertically() {
-            let columnNumberToCheck = lastPlacedPiece.y;
-            let columnToCheck = boardHelpers.getNthColumn(board, columnNumberToCheck);
+            var columnNumberToCheck = lastPlacedPiece.y;
+            var columnToCheck = boardHelpers.getNthColumn(board, columnNumberToCheck);
 
-            return isThereNInARowInThisArray(columnToCheck, lastPlacedPiece.x);
+            if (isThereNInARowInThisArray(columnToCheck, lastPlacedPiece.x)) {
+                calculateWinningPositionsVertically();
+                return true;
+            }
+
+            return false;
+        }
+
+        function calculateWinningPositionsVertically() {
+            var column = lastPlacedPiece.y;
+            var winningPosition = [];
+            for (var i = 0; i < indiciesOfWinningPositon.length; i++) {
+                var point = { x: column, y: startPoint + indiciesOfWinningPositon[i] };
+                winningPosition.push(point);
+            }
+
+            winningPositions.push(winningPosition);
+            console.log(winningPositions);
         }
 
         function isThereAWinnerDiaganoally() {
-            let pointToCheck = { x: lastPlacedPiece.x, y: lastPlacedPiece.y };
+            var pointToCheck = { x: lastPlacedPiece.x, y: lastPlacedPiece.y };
 
-            return isThereAWinnerTopLeftToBottomRight(pointToCheck) || isThereAWinnerTopRightToBottomLeft(pointToCheck);
+            var winnerDiagonal = isThereAWinnerTopLeftToBottomRight(pointToCheck);
+            if (winnerDiagonal){
+                calculateWinningDiaganoally();
+            } 
+
+            if (isThereAWinnerTopRightToBottomLeft(pointToCheck)) {
+                calculateWinningDiaganoally();
+                winnerDiagonal = true;
+            }
+
+            return winnerDiagonal;
+        }
+
+        function calculateWinningDiaganoally() {
+            console.log(indiciesOfWinningPositon);
+            console.log(startPoint);
+            console.log(endPoint);
+            console.log(lastPlacedPiece);
+            var winningPosition = [];
+            var startY = lastPlacedPiece.y + (lastPlacedPiece.x - startPoint);
+            for (var i = 0; i < indiciesOfWinningPositon.length; i++) {
+                var index = indiciesOfWinningPositon[i];
+                var point = { x: startPoint + index, y: startY - index};
+                winningPosition.push(point);
+            }
+
+            winningPositions.push(winningPosition);
+            console.log(winningPositions);
         }
 
         function isThereAWinnerTopLeftToBottomRight(pointToCheck) {
-            let diagonal = boardHelpers.getDiaganolTopLeftToBottomRight(board, pointToCheck);
+            var diagonal = boardHelpers.getDiaganolTopLeftToBottomRight(board, pointToCheck);
 
             return isThereNInARowInThisArray(diagonal, lastPlacedPiece.x);
         }
 
         function isThereAWinnerTopRightToBottomLeft(pointToCheck) {
-            let diagonal = boardHelpers.getDiaganolTopRightToBottomLeft(board, pointToCheck);
+            var diagonal = boardHelpers.getDiaganolTopRightToBottomLeft(board, pointToCheck);
 
             return isThereNInARowInThisArray(diagonal, lastPlacedPiece.x);
-        }
-
-        function reduceTheArrayWithinWinningBounds(arrayToCheck, lastPlacedPiecePosition) {
-            var startPoint = Math.max(0, lastPlacedPiecePosition - gameConstants.NUMBER_TO_CONNECT_TO_WIN)
-            var endPoint = Math.min(arrayToCheck.length, lastPlacedPiecePosition + gameConstants.NUMBER_TO_CONNECT_TO_WIN);
-
-            return arrayToCheck.slice(startPoint, endPoint);
         }
 
         function isThereNInARowInThisArray(arrayToCheck, lastPlacedPiecePosition) {
@@ -61,31 +119,33 @@
                 return false;
             }
 
-            return isThereNInARowInReducedArray(reducedArray);
+            indiciesOfWinningPositon = boardHelpers.getIndiciesIfNInARow(reducedArray, gameConstants.NUMBER_TO_CONNECT_TO_WIN, lastPlacedPiece.piece);
+
+            return indiciesOfWinningPositon.length === gameConstants.NUMBER_TO_CONNECT_TO_WIN;
         }
 
-        function isThereNInARowInReducedArray(reducedArray) {
-            var foundMatchingPiece = false;
-            var nInARow = 0;
-            for (var i = 0, len = reducedArray.length; i < len; i++) {
-                if (reducedArray[i] === lastPlacedPiece.piece) {
-                    foundMatchingPiece = true;
-                    nInARow++;
-                } else if (foundMatchingPiece) {
-                    nInARow = 0;
-                    foundMatchingPiece = 0;
-                }
+        function reduceTheArrayWithinWinningBounds(arrayToCheck, lastPlacedPiecePosition) {
+            startPoint = getStartPointForReducedArray(lastPlacedPiecePosition);
+            endPoint = getEndPointForReducedArray(arrayToCheck, lastPlacedPiecePosition);
 
-                if (nInARow === gameConstants.NUMBER_TO_CONNECT_TO_WIN) {
-                    return true;
-                }
-            }
+            return arrayToCheck.slice(startPoint, endPoint);
+        }
 
-            return false;
+        function getStartPointForReducedArray(lastPlacedPiecePosition) {
+            return Math.max(0, lastPlacedPiecePosition - gameConstants.NUMBER_TO_CONNECT_TO_WIN);
+        }
+
+        function getEndPointForReducedArray(arrayToCheck, lastPlacedPiecePosition) {
+            return Math.min(arrayToCheck.length, lastPlacedPiecePosition + gameConstants.NUMBER_TO_CONNECT_TO_WIN);
+        }
+
+        function getWinningPositions() {
+            return winningPositions;
         }
 
         return {
-            isThereAWinner: isThereAWinner
+            isThereAWinner: isThereAWinner,
+            getWinningPositions: getWinningPositions
         }
     }
 

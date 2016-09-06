@@ -35,25 +35,34 @@
             lastPiecePlaced.piece = piece;
         }
 
+        function isEmptyTile(x, y) {
+            return board[x][y] === gameConstants.EMPTY_TILE;
+        }
+
         var dropPieceInBoard = function (column, piece) {
             for (var i = board.length - 1; i >= 0 ; i--) {
-                if (board[i][column] === gameConstants.EMPTY_TILE) {
+                if (isEmptyTile(i, column)) {
                     board[i][column] = piece;
 
                     var pointUpdated = { x: i, y: column };
                     updateLastPlacedPiece(pointUpdated, piece);
 
-                    return true;
+                    return pointUpdated;
                 }
             }
 
-            return false;
+           throw new Error("invalid move");
+        }
+
+        var removeItemFromBoard = function(lastEntry) {
+            board[lastEntry.x][lastEntry.y] = gameConstants.EMPTY_TILE;
         }
 
         return {
             getBoard: getBoard,
             dropPieceInBoard: dropPieceInBoard,
-            getLastPiecePlaced: getLastPiecePlaced
+            getLastPiecePlaced: getLastPiecePlaced,
+            removeItemFromBoard: removeItemFromBoard
         }
 
     }
