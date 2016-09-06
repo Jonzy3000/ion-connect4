@@ -18,19 +18,19 @@
                     scope.board = board;
                 }
 
-                scope.getCircleClass = function(item) {
+                scope.getCircleClass = function (item) {
                     if (item === gameConstants.PIECE_1) {
                         return "piece1";
-                    } 
+                    }
                     else if (item === gameConstants.PIECE_2) {
                         return "piece2";
-                    } 
+                    }
                     else if (item === gameConstants.EMPTY_TILE) {
                         return "empty";
                     }
                 }
 
-                scope.makeTurn = function(column) {
+                scope.makeTurn = function (column) {
                     turnHandler.makeTurn(column);
                 }
             }

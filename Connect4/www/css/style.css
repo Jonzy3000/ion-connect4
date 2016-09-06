@@ -7,6 +7,12 @@
     cursor: pointer;
 }
 
+.board {
+   padding: 5px;
+   width: 50%;
+   margin: 0 auto;
+}
+
 .piece1 {
     fill: rgb(150,25,20)
 }

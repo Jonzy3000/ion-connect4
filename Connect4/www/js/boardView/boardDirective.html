@@ -1,12 +1,10 @@
-<div>
-    <div id="board">
-        <div class="board-row" ng-repeat="row in board">
-            <svg width="51" height="50" ng-repeat="item in row track by $index">
-                <circle cx="25" cy="25" r="20" stroke="#0B4E72" ng-class="getCircleClass(item)" ng-click="makeTurn($index)"></circle>
-            </svg>
-        </div>
+<div id="board">
+    <div class="board-row" ng-repeat="row in board" style="border-left:1px solid; border-right:1px solid">
+        <svg width="50" height="50" ng-repeat="item in row track by $index">
+            <circle cx="25" cy="25" r="20" stroke="#0B4E72" ng-class="getCircleClass(item)" ng-click="makeTurn($index)"></circle>
+        </svg>
     </div>
-    <!--<div ng-repeat="row in board">
+</div>
+<!--<div ng-repeat="row in board">
         <span ng-repeat='item in row track by $index'>{{item}}  </span>
     </div>-->
-</div>

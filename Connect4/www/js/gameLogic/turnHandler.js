@@ -1,7 +1,7 @@
 (function () {
     "use-strict"
 
-    var turnHandler = function (playerConstant, gameConstants, winConditions, tieConditions, boardFactory) {
+    var turnHandler = function (playerConstant, gameConstants, winConditions, tieConditions, boardFactory, gameOver) {
         var turnHistory = [];
         var player1 = {
             player: 1,
@@ -14,7 +14,7 @@
         }
 
         var whoseGoIsIt = player1;
-        var gameOver = false;
+        var isGameOver = false;
 
         function nextPlayersGo() {
             if (whoseGoIsIt.player === 1) {
@@ -30,13 +30,13 @@
 
         function endTurn() {
             if (winConditions.isThereAWinner(boardFactory.getLastPiecePlaced())) {
-                // dealWithPlayerWinning();
+                dealWithPlayerWinning();
                 console.log("WE HAVE A WINNER");
-                gameOver = true;
+                isGameOver = true;
             }
             else if (tieConditions.isThereATie()) {
                 dealWithATie();
-                gameOver = true;
+                isGameOver = true;
             } else {
                 nextPlayersGo();
             }
@@ -57,7 +57,7 @@
         }
 
         function makeTurn(columnOfChoice) {
-            if (gameOver) {
+            if (isGameOver) {
                 return;
             }
 
@@ -69,20 +69,28 @@
         }
 
         function undoTurn() {
-            if (turnHistory.length > 0) {
+            if (turnHistory.length > 0 && !isGameOver) {
                 var lastMove = turnHistory.pop();
                 boardFactory.removeItemFromBoard(lastMove);
                 nextPlayersGo();
             }
         }
 
+        function dealWithPlayerWinning() {
+            gameOver.setWinner(whoseGoIsIt);
+        }
+
+        function dealWithTie() {
+            gameOver.setIsATie(true);
+        }
+
         return {
             makeTurn: makeTurn,
             undoTurn: undoTurn,
-            _lastPiecePlaced: function() {
+            _lastPiecePlaced: function () {
                 return turnHistory[turnHistory.length - 1];
             },
-            _resetTurn: function() {
+            _resetTurn: function () {
                 while (turnHistory.length > 0) {
                     undoTurn();
                 }
