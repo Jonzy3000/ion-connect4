@@ -31,7 +31,7 @@
                 throw new Error("Column not in board");
             }
 
-            let column = [];
+            var column = [];
             for (var i = 0, len = board.length; i < len; i++) {
                 column.push(board[i][n]);
             }
@@ -40,11 +40,11 @@
         },
 
         "getDiaganolTopRightToBottomLeft": function (board, point) {
-            let x = point.x;
-            let y = point.y;
+            var x = point.x;
+            var y = point.y;
 
-            let diagonal = [];
-            for (let i = x, j = y, len = board.length; i < len; i++) {
+            var diagonal = [];
+            for (var i = x, j = y, len = board.length; i < len; i++) {
                 if (j >= board[i].length) {
                     break;
                 }
@@ -52,7 +52,7 @@
                 diagonal.push(board[i][j++]);
             }
 
-            for (let i = x - 1, j = y - 1; i > 0; i--) {
+            for (var i = x - 1, j = y - 1; i > 0; i--) {
                 if (j < 0) {
                     break;
                 }
@@ -64,12 +64,12 @@
         },
 
         "getDiaganolTopLeftToBottomRight": function (board, point) {
-            let x = point.x;
-            let y = point.y;
+            var x = point.x;
+            var y = point.y;
 
-            let diagonal = [];
+            var diagonal = [];
 
-            for (let i = x, j = y, len = board.length; i < len; i++) {
+            for (var i = x, j = y, len = board.length; i < len; i++) {
                 if (j < 0) {
                     break;
                 }
@@ -77,7 +77,7 @@
                 diagonal.push(board[i][j--]);
             }
 
-            for (let i = x - 1, j = y - 1, len = board.length; i > 0; i--) {
+            for (var i = x - 1, j = y - 1, len = board.length; i > 0; i--) {
                 if (j >= len) {
                     break;
                 }

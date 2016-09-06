@@ -2,7 +2,7 @@
     "use strict";
 
     var tieConditions = function (boardFactory, gameConstants) {
-        let board = [];
+        var board = [];
         function updateBoard() {
             board = boardFactory.getBoard();
         }
